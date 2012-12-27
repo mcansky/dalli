@@ -263,6 +263,25 @@ describe 'ActiveSupport' do
       end
     end
 
+    should 'support fragment_exist command' do
+      with_activesupport do
+        memcached do
+          connect
+          @dalli.write(:foo, 'a')
+          @dalli.write(:false_value, false)
+
+          assert_equal true, @dalli.fragment_exist?(:foo)
+          assert_equal true, @dalli.fragment_exist?(:false_value)
+
+          assert_equal false, @dalli.fragment_exist?(:bar)
+
+          user = MockUser.new
+          @dalli.write(user, 'foo')
+          assert_equal true, @dalli.fragment_exist?(user)
+        end
+      end
+    end
+
     should 'support other esoteric commands' do
       with_activesupport do
         memcached do

@@ -110,6 +110,7 @@ module ActiveSupport
         log(:exist, name, options)
         !read_entry(name, options).nil?
       end
+      alias_method :fragment_exist?, :exist?
 
       def delete(name, options=nil)
         options ||= {}
